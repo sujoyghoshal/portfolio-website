@@ -57,7 +57,11 @@ export default function Hero() {
               <span className="text-orange-500 font-bold text-xl">/&gt;</span>
             </div>
             <p className="text-slate-400 text-sm leading-relaxed max-w-md mb-8 mx-auto md:mx-0">
-              Passionate Software Engineer at <span className="text-orange-400 font-semibold">Capgemini</span> building scalable full-stack apps with React, Java & Spring Boot.
+              Passionate Software Engineer at{' '}
+              <span className="company-inline-mark">
+                <img src="/capgemini.png" alt="Capgemini" className="company-inline-logo" />
+              </span>{' '}
+              building scalable full-stack apps with React, Java & Spring Boot.
             </p>
 
             <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 mb-8">
@@ -65,7 +69,7 @@ export default function Hero() {
                 Hire Me
               </motion.a>
               <motion.a href="#education" whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }} className="outline-btn hero-action-btn">
-                Education & CV
+                Education
               </motion.a>
               <motion.a
                 href={portfolioData.resumePath}
@@ -75,7 +79,7 @@ export default function Hero() {
                 className="teal-btn hero-action-btn"
               >
                 <Download size={16} />
-                Download CV
+                Download Resume
               </motion.a>
             </div>
 

@@ -1,16 +1,26 @@
 import { motion } from 'framer-motion';
 import { Send } from 'lucide-react';
 import { useState } from 'react';
+import { submitCollabEmail } from '../utils/googleSheets';
 
 export default function CTA() {
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSent(true);
-    setEmail('');
-    setTimeout(() => setSent(false), 3000);
+    setLoading(true);
+    try {
+      await submitCollabEmail(email);
+      setSent(true);
+      setEmail('');
+      setTimeout(() => setSent(false), 3000);
+    } catch {
+      // silent fail
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -50,9 +60,10 @@ export default function CTA() {
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.96 }}
                 type="submit"
-                className="w-full px-7 py-3 orange-btn rounded-md text-sm flex items-center gap-2 justify-center shadow-lg shadow-orange-500/30"
+                disabled={loading}
+                className="w-full px-7 py-3 orange-btn rounded-md text-sm flex items-center gap-2 justify-center shadow-lg shadow-orange-500/30 disabled:opacity-60"
               >
-                {sent ? '✓ Sent!' : <><Send size={16} /> Contact Me</>}
+                {sent ? '✓ Sent!' : loading ? 'Sending...' : <><Send size={16} /> Contact Me</>}
               </motion.button>
             </form>
           </div>

@@ -52,6 +52,10 @@ export default function Navbar({ theme, onToggleTheme }) {
     setIsAuthenticated(Boolean(sessionUser));
   }, [location.pathname]);
 
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location.pathname]);
+
   const handleLogout = () => {
     clearAuthSession();
     setIsAuthenticated(false);
@@ -68,15 +72,13 @@ export default function Navbar({ theme, onToggleTheme }) {
       className={`app-navbar ${scrolled ? 'is-scrolled' : ''}`}
     >
       <div className="nav-inner max-w-6xl mx-auto px-4 md:px-6 py-4 flex items-center justify-between gap-4">
-        {/* Logo */}
-        <Link to="/" className="hidden md:block">
+        <Link to="/" className="nav-brand-link">
           <motion.div whileHover={{ scale: 1.03 }} className="flex items-center gap-1 cursor-pointer shrink-0">
             <span className="brand-word font-black text-xl tracking-tight">SUJOY</span>
             <span className="text-orange-500 font-black text-xl">.</span>
           </motion.div>
         </Link>
 
-        {/* Desktop nav */}
         {isHome && (
           <div className="hidden lg:flex items-center gap-7">
             {navLinks.map((link) => (
@@ -153,33 +155,42 @@ export default function Navbar({ theme, onToggleTheme }) {
               </Link>
             </div>
           )}
-          {isHome && (
-            <button onClick={() => setMenuOpen(!menuOpen)} className="mobile-menu-toggle lg:hidden" aria-label={menuOpen ? 'Close menu' : 'Open menu'}>
-              {menuOpen ? <X size={22} /> : <MoreVertical size={22} />}
-            </button>
-          )}
+          <button
+            type="button"
+            onClick={() => setMenuOpen((currentState) => !currentState)}
+            className="mobile-menu-toggle md:hidden"
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={menuOpen}
+          >
+            {menuOpen ? <X size={22} /> : <MoreVertical size={22} />}
+          </button>
         </div>
       </div>
 
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.22, ease: 'easeOut' }}
             className="mobile-menu-panel md:hidden"
           >
-            <div className="px-6 py-4 flex flex-col gap-4">
-              {navLinks.map((link) => (
+            <div className="mobile-menu-content px-5 py-5 flex flex-col gap-4">
+              {isHome ? navLinks.map((link) => (
                 <a
                   key={link.label}
                   href={link.href}
                   onClick={() => setMenuOpen(false)}
-                  className="nav-link text-sm font-medium"
+                  className="nav-link text-sm font-medium mobile-nav-link"
                 >
                   {link.label}
                 </a>
-              ))}
+              )) : (
+                <Link to="/" onClick={() => setMenuOpen(false)} className="nav-link text-sm font-medium mobile-nav-link">
+                  Home
+                </Link>
+              )}
               <button
                 type="button"
                 onClick={onToggleTheme}
@@ -189,7 +200,7 @@ export default function Navbar({ theme, onToggleTheme }) {
                 {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
                 <span>{theme === 'dark' ? 'Switch To Light Mode' : 'Switch To Dark Mode'}</span>
               </button>
-              <div className="flex gap-3 pt-2">
+              <div className="mobile-auth-actions flex gap-3 pt-2">
                 {isAuthenticated ? (
                   <>
                     {isAdmin ? (

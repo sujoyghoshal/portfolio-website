@@ -2,25 +2,46 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Mail, Phone, MapPin, Send, CheckCircle } from 'lucide-react';
 import { portfolioData } from '../data/portfolio';
+import { submitContactForm, submitCollabEmail } from '../utils/googleSheets';
 
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
   const [collabEmail, setCollabEmail] = useState('');
   const [sent, setSent] = useState(false);
   const [collabSent, setCollabSent] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [collabLoading, setCollabLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSent(true);
-    setForm({ name: '', email: '', subject: '', message: '' });
-    setTimeout(() => setSent(false), 3000);
+    setLoading(true);
+    setError('');
+    try {
+      await submitContactForm(form);
+      setSent(true);
+      setForm({ name: '', email: '', subject: '', message: '' });
+      setTimeout(() => setSent(false), 3000);
+    } catch {
+      setError('Failed to send. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleCollabSubmit = (e) => {
+  const handleCollabSubmit = async (e) => {
     e.preventDefault();
-    setCollabSent(true);
-    setCollabEmail('');
-    setTimeout(() => setCollabSent(false), 3000);
+    setCollabLoading(true);
+    try {
+      await submitCollabEmail(collabEmail);
+      setCollabSent(true);
+      setCollabEmail('');
+      setTimeout(() => setCollabSent(false), 3000);
+    } catch {
+      // silent fail for collab
+    } finally {
+      setCollabLoading(false);
+    }
   };
 
   return (
@@ -85,12 +106,14 @@ export default function Contact() {
                 <textarea value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} required rows={5} placeholder="Tell me about your project..."
                   className="input-field resize-none min-h-[124px]" />
               </div>
+              {error && <p className="text-red-400 text-xs text-center">{error}</p>}
               <motion.button
                 whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
                 type="submit"
-                className="w-full py-3 orange-btn rounded-lg flex items-center justify-center gap-2 text-sm shadow-lg shadow-orange-500/25"
+                disabled={loading}
+                className="w-full py-3 orange-btn rounded-lg flex items-center justify-center gap-2 text-sm shadow-lg shadow-orange-500/25 disabled:opacity-60"
               >
-                <Send size={16} /> Send Message
+                <Send size={16} /> {loading ? 'Sending...' : 'Send Message'}
               </motion.button>
             </form>
           </motion.div>
@@ -127,9 +150,10 @@ export default function Contact() {
                   whileHover={{ scale: 1.04 }}
                   whileTap={{ scale: 0.96 }}
                   type="submit"
-                  className="w-full px-4 py-2.5 orange-btn rounded-md text-xs flex items-center gap-1.5 justify-center shadow-lg shadow-orange-500/30"
+                  disabled={collabLoading}
+                  className="w-full px-4 py-2.5 orange-btn rounded-md text-xs flex items-center gap-1.5 justify-center shadow-lg shadow-orange-500/30 disabled:opacity-60"
                 >
-                  {collabSent ? 'Sent!' : 'Contact Me'}
+                  {collabSent ? 'Sent!' : collabLoading ? 'Sending...' : 'Contact Me'}
                 </motion.button>
               </form>
             </div>
