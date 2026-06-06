@@ -1,39 +1,78 @@
 import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
-import { MapPin, Mail, Phone, GitBranch, Sparkles } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { MapPin, Mail, Phone } from 'lucide-react';
+import { SiGithub } from 'react-icons/si';
 import { portfolioData } from '../data/portfolio';
 
-const skills = [
-  { name: 'React / Frontend', pct: 90 },
-  { name: 'Java & Spring Boot', pct: 85 },
-  { name: 'REST APIs', pct: 82 },
-  { name: 'MySQL / MongoDB', pct: 78 },
-  { name: 'Node.js', pct: 75 },
-  { name: 'CI/CD & Agile', pct: 80 },
+const stats = [
+  { value: 1,   suffix: '+', label: 'Years Experience' },
+  { value: 10,  suffix: '+', label: 'Projects Built'   },
+  { value: 8,   suffix: '.27', label: 'CGPA / 10'      },
+  { value: 4,   suffix: '',  label: 'US Clients Served' },
 ];
 
-const highlights = [
-  'Builds clean, scalable React and Spring Boot products.',
-  'Focuses on performance, responsive UI, and maintainable code.',
-  'Comfortable shipping both client work and enterprise features.',
+function Counter({ value, suffix }) {
+  const [count, setCount] = useState(0);
+  const ref    = useRef(null);
+  const inView = useInView(ref, { once: true });
+
+  useEffect(() => {
+    if (!inView) return;
+    let start = 0;
+    const step = value / 40;
+    const t = setInterval(() => {
+      start += step;
+      if (start >= value) { setCount(value); clearInterval(t); }
+      else setCount(Math.floor(start * 10) / 10);
+    }, 30);
+    return () => clearInterval(t);
+  }, [inView, value]);
+
+  return (
+    <span ref={ref} className="about-stat-num">
+      {suffix === '.27' ? count.toFixed(2) : Math.round(count)}{suffix}
+    </span>
+  );
+}
+
+const infoItems = [
+  { Icon: Mail,   value: portfolioData.email },
+  { Icon: Phone,  value: portfolioData.phone },
+  { Icon: MapPin, value: 'Sector 48, Gurgaon, India' },
+  { Icon: SiGithub, value: 'github.com/sujoyghoshal' },
+];
+
+const skillTags = [
+  'React', 'TypeScript', 'Java', 'Spring Boot',
+  'Node.js', 'MySQL', 'MongoDB', 'REST APIs',
+  'Tailwind CSS', 'Git', 'CI/CD', 'Agile',
+];
+
+const progressItems = [
+  { name: 'React / Frontend', pct: 90 },
+  { name: 'Java & Spring Boot', pct: 85 },
+  { name: 'REST APIs',          pct: 82 },
+  { name: 'MySQL / MongoDB',    pct: 78 },
+  { name: 'Node.js',            pct: 75 },
+  { name: 'CI/CD & Agile',      pct: 80 },
 ];
 
 function SkillBar({ name, pct, delay }) {
-  const ref = useRef(null);
+  const ref    = useRef(null);
   const inView = useInView(ref, { once: true });
 
   return (
-    <div ref={ref} className="mb-4">
-      <div className="flex justify-between mb-1">
-        <span className="text-slate-300 text-sm">{name}</span>
-        <span className="text-orange-400 text-sm font-bold">{pct}%</span>
+    <div ref={ref} className="skill-progress-item">
+      <div className="skill-progress-label">
+        <span>{name}</span>
+        <span>{pct}%</span>
       </div>
       <div className="skill-bar-bg">
         <motion.div
+          className="skill-bar-fill"
           initial={{ width: 0 }}
           animate={{ width: inView ? `${pct}%` : 0 }}
-          transition={{ delay, duration: 1.2, ease: 'easeOut' }}
-          className="skill-bar-fill"
+          transition={{ delay, duration: 1.1, ease: 'easeOut' }}
         />
       </div>
     </div>
@@ -48,91 +87,80 @@ export default function About() {
           <p className="section-sub">Who I Am</p>
           <h2 className="section-title">About <span className="gradient-text">Me</span></h2>
           <p className="section-copy">
-            Product-minded engineering, clean interfaces, and scalable backend thinking brought together in one focused profile.
+            Product-minded engineering, clean interfaces, and scalable backend
+            thinking brought together in one focused profile.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-10 md:gap-14 items-stretch">
+        {/* Stat row */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-14">
+          {stats.map((s, i) => (
+            <motion.div
+              key={s.label}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.08, duration: 0.5 }}
+              className="about-stat-card"
+            >
+              <Counter value={s.value} suffix={s.suffix} />
+              <p className="about-stat-lbl">{s.label}</p>
+            </motion.div>
+          ))}
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-10 items-start">
+          {/* Left — Info */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
+            initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="about-summary-card card h-full p-6 sm:p-7 md:p-8"
+            className="glass-card p-7 flex flex-col gap-6"
           >
-            <div className="about-summary-head">
-              <span className="about-summary-badge">
-                <Sparkles size={14} />
-                Profile Snapshot
-              </span>
-              <div>
-                <h3 className="text-xl font-bold text-white mb-1">
-                  Software Engineer @{' '}
-                  <span className="company-inline-mark company-inline-mark-strong">
-                    <img src="/capgemini.png" alt="Capgemini" className="company-inline-logo" />
-                  </span>
-                </h3>
-                <p className="text-slate-400 text-sm leading-relaxed">{portfolioData.about}</p>
-              </div>
+            <div>
+              <p className="section-sub" style={{ justifyContent: 'flex-start' }}>Profile</p>
+              <h3 className="text-xl font-extrabold text-[var(--text)] mt-1 mb-3">
+                Software Engineer @ <span className="gradient-text">Capgemini</span>
+              </h3>
+              <p className="text-[var(--muted)] text-sm leading-relaxed">{portfolioData.about}</p>
             </div>
 
-            <div className="about-highlight-list">
-              {highlights.map((item) => (
-                <div key={item} className="about-highlight-item">
-                  <span className="about-highlight-dot" />
-                  <p>{item}</p>
+            <div className="flex flex-col gap-3">
+              {infoItems.map(({ Icon, value }) => (
+                <div key={value} className="info-row">
+                  <Icon size={15} className="text-[#00D4FF] shrink-0" />
+                  <span className="text-sm truncate">{value}</span>
                 </div>
               ))}
             </div>
 
-            <div className="about-summary-meta">
-              {[
-                { icon: <Mail size={13} />, value: portfolioData.email },
-                { icon: <Phone size={13} />, value: portfolioData.phone },
-                { icon: <MapPin size={13} />, value: 'Sector 48, Gurgaon, India' },
-                { icon: <GitBranch size={13} />, value: 'github.com/sujoyghoshal' },
-              ].map(({ icon, value }) => (
-                <div key={value} className="about-meta-pill">
-                  <span className="text-orange-400 shrink-0">{icon}</span>
-                  <span>{value}</span>
-                </div>
+            <div className="flex flex-wrap gap-2">
+              {skillTags.map((t) => (
+                <span key={t} className="skill-tag-pill">{t}</span>
               ))}
-            </div>
-
-            <div className="about-summary-foot">
-              <div>
-                <p className="text-orange-400 font-black text-2xl sm:text-3xl">1+</p>
-                <p className="text-slate-500 text-xs uppercase tracking-[0.2em]">Years Experience</p>
-              </div>
-              <div>
-                <p className="text-orange-400 font-black text-2xl sm:text-3xl">10+</p>
-                <p className="text-slate-500 text-xs uppercase tracking-[0.2em]">Projects Built</p>
-              </div>
             </div>
           </motion.div>
 
+          {/* Right — Skill Bars */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0, x: 40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="about-skills-panel card h-full p-6 sm:p-7 md:p-8 text-center md:text-left"
+            className="glass-card p-7 flex flex-col gap-2"
           >
-            <div className="about-skill-tags">
-              <span>React UI</span>
-              <span>Spring Boot</span>
-              <span>API Design</span>
-            </div>
-            <h3 className="text-xl font-bold text-white mb-1">Core Strengths</h3>
-            <p className="text-slate-400 text-sm leading-relaxed mb-6">
-              Practical frontend and backend execution with a strong focus on shipping responsive, production-ready experiences.
-            </p>
-
-            {skills.map((s, i) => (
-              <SkillBar key={s.name} name={s.name} pct={s.pct} delay={i * 0.08} />
+            <p className="section-sub mb-2" style={{ justifyContent: 'flex-start' }}>Proficiency</p>
+            <h3 className="text-xl font-extrabold text-[var(--text)] mb-5">Core Strengths</h3>
+            {progressItems.map((s, i) => (
+              <SkillBar key={s.name} name={s.name} pct={s.pct} delay={i * 0.09} />
             ))}
-            <motion.a href="#contact" whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
-              className="orange-btn mt-6 inline-flex hero-action-btn">
+            <motion.a
+              href="#contact"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              className="btn-primary mt-4 self-start"
+            >
               Let's Work Together →
             </motion.a>
           </motion.div>

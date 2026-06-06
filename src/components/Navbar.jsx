@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { LogOut, Moon, MoreVertical, ShieldCheck, Sun, X } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AUTH_STORAGE_KEY, clearAuthSession, getCurrentUser, isAdminAuthenticated } from '../utils/auth';
+import { signOutFirebase } from '../utils/firebase';
 
 const navLinks = [
   { label: 'Home', href: '#hero' },
@@ -57,6 +58,7 @@ export default function Navbar({ theme, onToggleTheme }) {
   }, [location.pathname]);
 
   const handleLogout = () => {
+    signOutFirebase().catch(() => {});
     clearAuthSession();
     setIsAuthenticated(false);
     setCurrentUser(null);
@@ -119,8 +121,11 @@ export default function Navbar({ theme, onToggleTheme }) {
                 </Link>
               ) : (
                 <div className="nav-user-pill">
-                  <span>User</span>
-                  <strong>{currentUser?.name || currentUser?.email}</strong>
+                  {currentUser?.photoURL
+                    ? <img src={currentUser.photoURL} alt={currentUser.name} className="w-7 h-7 rounded-full object-cover flex-shrink-0" referrerPolicy="no-referrer" />
+                    : <span className="w-7 h-7 rounded-full bg-gradient-to-br from-[#00D4FF] to-[#8B5CF6] flex items-center justify-center text-white text-xs font-bold flex-shrink-0">{(currentUser?.name || 'U')[0].toUpperCase()}</span>
+                  }
+                  <strong className="max-w-[120px] truncate">{currentUser?.name || currentUser?.email}</strong>
                 </div>
               )}
               <motion.button

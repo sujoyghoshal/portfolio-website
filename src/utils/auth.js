@@ -234,3 +234,18 @@ export function authenticateUser({ email, password }) {
 }
 
 export { AUTH_STORAGE_KEY };
+
+export function persistGoogleUser(firebaseUser) {
+  const session = {
+    id: firebaseUser.uid,
+    name: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'Google User',
+    email: normalizeEmail(firebaseUser.email || ''),
+    photoURL: firebaseUser.photoURL || null,
+    role: 'user',
+    provider: 'google',
+    lastLoginAt: new Date().toISOString(),
+  };
+  persistSession(session);
+  recordLogin(session);
+  return session;
+}

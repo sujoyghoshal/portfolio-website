@@ -6,22 +6,17 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import AdminDashboard from './pages/AdminDashboard';
 import PaymentStatus from './pages/PaymentStatus';
+import CustomCursor from './components/CustomCursor';
+import LoadingScreen from './components/LoadingScreen';
 import { isAdminAuthenticated } from './utils/auth';
 import './index.css';
 
 const THEME_STORAGE_KEY = 'portfolio-theme';
 
 function getInitialTheme() {
-  if (typeof window === 'undefined') {
-    return 'dark';
-  }
-
-  const savedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
-
-  if (savedTheme === 'light' || savedTheme === 'dark') {
-    return savedTheme;
-  }
-
+  if (typeof window === 'undefined') return 'dark';
+  const saved = window.localStorage.getItem(THEME_STORAGE_KEY);
+  if (saved === 'light' || saved === 'dark') return saved;
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
@@ -40,17 +35,15 @@ function AppLayout() {
     window.localStorage.setItem(THEME_STORAGE_KEY, theme);
   }, [theme]);
 
-  const toggleTheme = () => {
-    setTheme((currentTheme) => (currentTheme === 'dark' ? 'light' : 'dark'));
-  };
+  const toggleTheme = () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
 
   return (
     <>
       {showNavbar && <Navbar theme={theme} onToggleTheme={toggleTheme} />}
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
+        <Route path="/"               element={<Home />} />
+        <Route path="/login"          element={<Login />} />
+        <Route path="/signup"         element={<Signup />} />
         <Route path="/payment-status" element={<PaymentStatus />} />
         <Route
           path="/admin"
@@ -66,8 +59,17 @@ function AppLayout() {
 }
 
 export default function App() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const t = setTimeout(() => setLoading(false), 1900);
+    return () => clearTimeout(t);
+  }, []);
+
   return (
     <BrowserRouter>
+      <CustomCursor />
+      <LoadingScreen show={loading} />
       <AppLayout />
     </BrowserRouter>
   );
