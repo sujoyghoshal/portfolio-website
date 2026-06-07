@@ -16,7 +16,7 @@ export const portfolioData = {
   services: [
     { name: "Portfolio Website", price: 5000, description: "Clean, responsive portfolio site tailored to your brand", icon: "🌐" },
     { name: "Full Stack Application", price: 20000, description: "End-to-end web app with React frontend & Java/Node backend", icon: "⚡" },
-    { name: "Bug Fixing / Consulting", price: 500, description: "Per hour — diagnosis, fixes, and code review", icon: "🔧", perHour: true },
+    { name: "Bug Fixing / Consulting", price: 1, description: "Per hour — diagnosis, fixes, and code review", icon: "🔧", perHour: true },
   ],
 
   skills: {

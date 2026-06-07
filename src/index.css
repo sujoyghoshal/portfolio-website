@@ -239,6 +239,14 @@ html[data-theme='light'] .glass-card { background: rgba(255,255,255,0.75); borde
   box-shadow: 0 1px 0 rgba(255,255,255,.06), 0 16px 40px rgba(0,0,0,.3);
 }
 .nav-inner { min-height: 72px; }
+@media (max-width: 768px) {
+  .app-navbar    { padding: 0 .75rem; }
+  .nav-inner     { min-height: 58px; }
+  .mobile-menu-panel { margin-top: 6px; border-radius: 16px; }
+  /* Force-hide desktop nav items on mobile — CSS class wins over Tailwind hidden */
+  .theme-toggle  { display: none !important; }
+  .nav-auth-group { display: none !important; }
+}
 .nav-brand-link { display: inline-flex; align-items: center; }
 .brand-word {
   font-size: 1.35rem; font-weight: 900; letter-spacing: -.02em;
@@ -301,14 +309,63 @@ html[data-theme='light'] .glass-card { background: rgba(255,255,255,0.75); borde
   box-shadow: 0 24px 60px rgba(0,0,0,.4);
 }
 .mobile-nav-link {
-  display: flex; align-items: center; min-height: 48px; padding: 0 .25rem;
+  display: flex; align-items: center; min-height: 46px; padding: 0 8px;
   border-bottom: 1px solid rgba(255,255,255,.05);
   color: var(--muted); font-size: .9rem; font-weight: 600; transition: color .2s;
 }
-.mobile-nav-link:last-of-type { border-bottom: none; }
 .mobile-nav-link:hover { color: #00D4FF; }
 .mobile-auth-actions { display: grid; grid-template-columns: 1fr; }
 .mobile-menu-content { position: relative; }
+
+/* Divider inside mobile menu */
+.mobile-menu-divider {
+  height: 1px; background: rgba(255,255,255,.08);
+  margin: 6px 0;
+}
+
+/* Row item (theme toggle, login, etc.) */
+.mobile-menu-row {
+  display: flex; align-items: center; gap: 12px;
+  min-height: 48px; padding: 0 8px;
+  color: var(--text); font-size: .9rem; font-weight: 600;
+  border-radius: 10px; cursor: pointer; transition: all .2s;
+  border: none; background: transparent; text-align: left; width: 100%;
+}
+.mobile-menu-row:hover { background: rgba(255,255,255,.05); color: #00D4FF; }
+.mobile-menu-row-danger { color: var(--muted); }
+.mobile-menu-row-danger:hover { background: rgba(248,113,113,.08); color: #fca5a5; }
+.mobile-menu-row-icon {
+  width: 32px; height: 32px; border-radius: 9px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,.07); color: var(--muted);
+}
+.mobile-menu-row:hover .mobile-menu-row-icon { background: rgba(0,212,255,.1); color: #00D4FF; }
+.mobile-menu-row-icon-admin { background: rgba(139,92,246,.12); color: #A78BFA; }
+.mobile-menu-row-icon-danger { background: rgba(248,113,113,.1); color: #fca5a5; }
+.mobile-menu-row-badge {
+  margin-left: auto; padding: 2px 8px; border-radius: 999px;
+  background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.1);
+  color: var(--muted); font-size: .68rem; font-weight: 700;
+  letter-spacing: .06em; text-transform: uppercase;
+}
+.mobile-menu-row-badge-new { background: rgba(0,212,255,.1); border-color: rgba(0,212,255,.2); color: #00D4FF; }
+
+/* Sign Up row — gradient accent */
+.mobile-menu-row-signup {
+  display: flex; align-items: center; gap: 12px;
+  min-height: 48px; padding: 0 8px;
+  color: var(--text); font-size: .9rem; font-weight: 700;
+  border-radius: 10px; cursor: pointer; transition: all .2s;
+  border: 1px solid rgba(0,212,255,.2); background: rgba(0,212,255,.05);
+  text-align: left; width: 100%; text-decoration: none;
+  margin-top: 4px;
+}
+.mobile-menu-row-signup:hover { background: rgba(0,212,255,.1); border-color: rgba(0,212,255,.4); }
+.mobile-menu-row-signup-icon {
+  width: 32px; height: 32px; border-radius: 9px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg,#00D4FF,#8B5CF6); color: white;
+}
 
 /* ─── Hero ──────────────────────────────────────────────────── */
 .hero-section {
@@ -1486,3 +1543,129 @@ input::placeholder, textarea::placeholder { text-align: left; }
 .pay-success-details > div:last-child { border-bottom: none; }
 .pay-success-details span   { color: var(--muted); font-size: .8rem; }
 .pay-success-details strong { color: var(--text); font-size: .86rem; font-weight: 700; text-align: right; }
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE RESPONSIVE — must be LAST in file so nothing overrides
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Tablet (≤1024px) ─────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .pay-service-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ── Mobile (≤768px) ──────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* ── Global ── */
+  html, body { overflow-x: hidden; }
+  .section-center { padding: 0 14px; }
+
+  /* ── Hero ── */
+  .hero-section     { min-height: 100svh; align-items: flex-start; padding-top: 70px; }
+  .hero-name-text   { font-size: clamp(2rem, 8vw, 2.8rem); }
+  .hero-description { font-size: .87rem; max-width: 100%; }
+  .hero-cta-group   { gap: 10px; }
+  .hero-cta-group .btn-primary,
+  .hero-cta-group .btn-secondary { flex: 1 1 140px; justify-content: center; }
+  .hero-photo-ring  { width: 220px; height: 220px; }
+  .float-badge      { padding: 8px 12px; }
+  .float-badge-num  { font-size: 1.1rem; }
+  .float-badge-tr   { right: -4px; top: 6px; }
+  .float-badge-bl   { left: -4px; bottom: 6px; }
+
+  /* ── About ── */
+  .about-stat-num  { font-size: 1.9rem; }
+  .about-stat-lbl  { font-size: .7rem; }
+
+  /* ── Skills ── */
+  .skill-group-card { padding: 20px; }
+
+  /* ── Experience / Education timeline ── */
+  .timeline-wrap { padding-left: 24px; }
+  .timeline-wrap::before { left: 4px; }
+  .timeline-dot  { left: -20px; width: 12px; height: 12px; }
+
+  /* ── Projects ── */
+  .project-card  { border-radius: 16px; }
+  .project-body  { padding: 16px; }
+
+  /* ── Payment service cards (CSS-ordering fix — must be here at end) ── */
+  .pay-service-grid   { grid-template-columns: 1fr !important; }
+  .pay-svc-footer     { flex-wrap: wrap; gap: 8px; }
+  .pay-cta-btn        { width: 100%; justify-content: center; padding: 15px 24px; }
+  .pay-hours-bar      { flex-direction: column; align-items: flex-start; gap: 12px; }
+
+  /* ── Checkout modal ── */
+  .pay-overlay      { padding: 8px; align-items: flex-end; }
+  .pay-modal        { max-height: 96vh; border-radius: 22px 22px 0 0; width: 100%; }
+  .pay-modal-split  { grid-template-columns: 1fr !important; }
+  .pay-order-panel  { padding: 18px 16px; border-right: none; border-bottom: 1px solid var(--border); }
+  .pay-form-panel   { padding: 18px 16px; }
+  .pay-form-title   { font-size: 1rem; }
+  .pay-method-tab   { padding: 11px 12px; }
+  .pay-method-tab-badge { display: none; }
+  .pay-amount-pill  { width: 100%; justify-content: space-between; }
+  .pay-amount-pill strong { font-size: 1.1rem; }
+  .pay-upi-id-row   { flex-wrap: wrap; gap: 8px; }
+  .pay-copy-btn     { width: 100%; justify-content: center; }
+  .pay-pay-btn      { padding: 14px; font-size: .88rem; }
+
+  /* ── Contact ── */
+  .contact-info-row { min-height: 70px !important; }
+
+  /* ── Footer ── */
+  .footer-gradient-line { margin: 0; }
+}
+
+/* ── Small mobile (≤480px) ────────────────────────────────── */
+@media (max-width: 480px) {
+  /* ── Hero ── */
+  .hero-section     { padding-top: 60px; }
+  .hero-name-text   { font-size: 1.9rem; }
+  .hero-photo-ring  { width: 180px; height: 180px; }
+  .hero-cta-group .btn-primary,
+  .hero-cta-group .btn-secondary { width: 100%; flex: none; font-size: .84rem; padding: 11px 18px; }
+  .hero-description { font-size: .82rem; margin-bottom: 1.4rem; }
+  .hero-role-line   { gap: 6px; }
+  .typewriter-word  { font-size: .95rem; }
+  .role-bracket     { font-size: 1rem; }
+  .float-badge-tr   { right: 2px; top: 4px; transform: scale(.82); transform-origin: top right; }
+  .float-badge-bl   { left: 2px; bottom: 4px; transform: scale(.82); transform-origin: bottom left; }
+
+  /* ── Section titles ── */
+  .section-title { font-size: 1.6rem; }
+  .section-shell { margin-bottom: 2rem; }
+
+  /* ── About stats ── */
+  .about-stat-card { padding: 1rem .8rem; }
+  .about-stat-num  { font-size: 1.7rem; }
+
+  /* ── Cards / glass ── */
+  .glass-card { padding: 18px 14px !important; }
+
+  /* ── Payment ── */
+  .pay-service-grid { grid-template-columns: 1fr !important; }
+  .pay-svc-icon     { width: 46px; height: 46px; font-size: 1.4rem; }
+  .pay-svc-price    { font-size: 1.65rem; }
+  .pay-popular-badge { top: 10px; right: 10px; font-size: .6rem; }
+  .pay-cta-btn      { font-size: .88rem; padding: 14px 18px; }
+
+  /* ── Checkout modal (bottom sheet on small phones) ── */
+  .pay-overlay  { padding: 0; align-items: flex-end; }
+  .pay-modal    { border-radius: 20px 20px 0 0; max-height: 97vh; }
+  .pay-order-panel  { padding: 14px; }
+  .pay-form-panel   { padding: 14px; }
+  .pay-breakdown-total strong { font-size: 1.1rem; }
+  .pay-success-state { padding: 32px 16px; }
+  .pay-success-icon  { width: 64px; height: 64px; }
+  .pay-success-title { font-size: 1.3rem; }
+
+  /* ── Buttons global ── */
+  .btn-primary, .btn-secondary { font-size: .84rem; padding: 11px 20px; }
+
+  /* ── Auth cards ── */
+  .auth-card,.auth-card-signup { padding: 1.2rem .9rem 1.4rem; }
+
+  /* ── Modal ── */
+  .modal-card { padding: 20px 14px; border-radius: 18px; }
+  .modal-overlay { padding: 8px; align-items: flex-end; }
+}

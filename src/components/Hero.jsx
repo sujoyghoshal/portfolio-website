@@ -90,8 +90,8 @@ export default function Hero() {
       <div className="blob blob-purple" aria-hidden="true" />
       <div className="blob blob-pink"   aria-hidden="true" />
 
-      <div className="section-center w-full relative z-10 pt-28 pb-16">
-        <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-center">
+      <div className="section-center w-full relative z-10 pt-28 pb-16 md:pt-28">
+        <div className="grid md:grid-cols-2 gap-8 md:gap-16 items-center">
 
           {/* ── Left ── */}
           <motion.div

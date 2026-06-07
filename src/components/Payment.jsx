@@ -8,7 +8,10 @@ import {
 import { portfolioData } from '../data/portfolio';
 
 const RAZORPAY_KEY_ID = import.meta.env.VITE_RAZORPAY_KEY_ID;
-const BACKEND_URL     = import.meta.env.VITE_BACKEND_URL || 'http://localhost:4000';
+// In production (Vercel) API routes are on the same domain — use relative URL.
+// In local dev fallback to the Express server on port 4000.
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
+  ?? (import.meta.env.PROD ? '' : 'http://localhost:4000');
 
 function isRazorpayConfigured() {
   return Boolean(RAZORPAY_KEY_ID && !RAZORPAY_KEY_ID.startsWith('your_'));
