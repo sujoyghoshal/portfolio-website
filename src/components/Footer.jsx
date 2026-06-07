@@ -95,6 +95,11 @@ export default function Footer() {
                 <MapPin size={14} className="shrink-0 text-[#00D4FF]" />
                 {portfolioData.location}
               </div>
+              <a href={portfolioData.github} target="_blank" rel="noreferrer"
+                className="flex items-center gap-2 text-[var(--muted)] text-sm hover:text-[#00D4FF] transition-colors">
+                <SiGithub size={14} className="shrink-0 text-[#00D4FF]" />
+                github.com/sujoyghoshal
+              </a>
             </div>
           </div>
         </div>
