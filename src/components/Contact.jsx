@@ -165,11 +165,6 @@ export default function Contact() {
                 }
               </motion.button>
 
-              {!isEmailJSConfigured() && (
-                <p className="text-[var(--muted)] text-xs text-center">
-                  Add <code className="text-[#00D4FF]">VITE_EMAILJS_*</code> keys in .env for direct Gmail delivery.
-                </p>
-              )}
             </form>
           </motion.div>
 

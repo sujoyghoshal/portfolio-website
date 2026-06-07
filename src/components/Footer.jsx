@@ -1,71 +1,74 @@
 import { motion } from 'framer-motion';
-import { Mail, ChevronUp, Link2 } from 'lucide-react';
+import { Mail, Phone, MapPin, ChevronUp, Link2 } from 'lucide-react';
 import { SiGithub } from 'react-icons/si';
 import { portfolioData } from '../data/portfolio';
 
-const socials = [
-  { Icon: SiGithub,   href: portfolioData.github,            label: 'GitHub'   },
-  { Icon: Link2,      href: portfolioData.linkedin,          label: 'LinkedIn' },
-  { Icon: Mail,       href: `mailto:${portfolioData.email}`, label: 'Email'    },
+const quickLinks = [
+  { label: 'About',      href: '#about'      },
+  { label: 'Skills',     href: '#skills'     },
+  { label: 'Experience', href: '#experience' },
+  { label: 'Projects',   href: '#projects'   },
+  { label: 'Education',  href: '#education'  },
+  { label: 'Contact',    href: '#contact'    },
 ];
 
-const quickLinks = [
-  { label: 'About',        href: '#about'       },
-  { label: 'Skills',       href: '#skills'      },
-  { label: 'Experience',   href: '#experience'  },
-  { label: 'Projects',     href: '#projects'    },
-  { label: 'Education',    href: '#education'   },
-  { label: 'Contact',      href: '#contact'     },
+const socials = [
+  { icon: SiGithub,   href: portfolioData.github,            label: 'GitHub'   },
+  { icon: Link2,      href: portfolioData.linkedin,           label: 'LinkedIn' },
+  { icon: Mail,       href: `mailto:${portfolioData.email}`,  label: 'Email'    },
 ];
 
 export default function Footer() {
   const scrollTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
   return (
-    <footer className="relative pt-16 pb-8 px-4 sm:px-6 overflow-hidden">
-      <div className="footer-gradient-line mb-12" />
+    <footer className="relative pt-14 pb-6 px-4 overflow-hidden">
+      <div className="footer-gradient-line mb-10" />
 
-      {/* Subtle bg glow */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse,rgba(0,212,255,0.04),transparent 70%)' }} />
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[500px] h-[160px] pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse,rgba(0,212,255,0.05),transparent 70%)' }} />
 
       <div className="section-center relative z-10">
-        <div className="grid sm:grid-cols-3 gap-10 mb-12">
+
+        {/* 3-col grid → stacks on mobile */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-10">
 
           {/* Brand */}
           <div className="flex flex-col gap-4">
-            <div>
+            <div className="flex items-center gap-1">
               <span className="text-2xl font-black tracking-tight gradient-text">SUJOY</span>
               <span className="text-[#00D4FF] font-black text-2xl">.</span>
             </div>
-            <p className="text-[var(--muted)] text-sm leading-relaxed max-w-xs">
-              Full Stack Developer crafting elegant, high-performance digital products
-              with React, Java, and Spring Boot.
+            <p className="text-[var(--muted)] text-sm leading-relaxed max-w-[260px]">
+              Full Stack Developer crafting high-performance digital products with React, Java &amp; Spring Boot.
             </p>
-            <div className="flex gap-2">
-              {socials.map(({ Icon, href, label }) => (
+            <div className="flex gap-2 mt-1">
+              {socials.map(({ icon: Icon, href, label }) => (
                 <motion.a
-                  key={label} href={href}
-                  target="_blank" rel="noreferrer"
-                  whileHover={{ scale: 1.12, y: -3 }}
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={label}
+                  whileHover={{ scale: 1.12, y: -2 }}
+                  whileTap={{ scale: 0.95 }}
                   className="footer-social-link"
-                  title={label}
                 >
-                  <Icon size={17} />
+                  <Icon size={16} />
                 </motion.a>
               ))}
             </div>
           </div>
 
-          {/* Quick links */}
+          {/* Quick Links */}
           <div>
-            <p className="text-[var(--text)] font-bold text-sm mb-4 tracking-widest uppercase opacity-60">Quick Links</p>
-            <ul className="flex flex-col gap-2.5">
+            <p className="text-[var(--text)] font-semibold text-xs tracking-widest uppercase mb-4 opacity-50">Quick Links</p>
+            <ul className="grid grid-cols-2 gap-x-4 gap-y-2">
               {quickLinks.map(({ label, href }) => (
                 <li key={label}>
                   <a
                     href={href}
-                    className="text-[var(--muted)] text-sm font-medium hover:text-[#00D4FF] transition-colors"
+                    className="text-[var(--muted)] text-sm hover:text-[#00D4FF] transition-colors"
                   >
                     {label}
                   </a>
@@ -76,39 +79,44 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <p className="text-[var(--text)] font-bold text-sm mb-4 tracking-widest uppercase opacity-60">Contact</p>
-            <div className="flex flex-col gap-2.5">
-              {[
-                { label: portfolioData.email,    href: `mailto:${portfolioData.email}` },
-                { label: portfolioData.phone,    href: `tel:${portfolioData.phone}`    },
-                { label: portfolioData.location, href: null                            },
-              ].map(({ label, href }) => (
-                <div key={label}>
-                  {href
-                    ? <a href={href} className="text-[var(--muted)] text-sm hover:text-[#00D4FF] transition-colors">{label}</a>
-                    : <p className="text-[var(--muted)] text-sm">{label}</p>}
-                </div>
-              ))}
+            <p className="text-[var(--text)] font-semibold text-xs tracking-widest uppercase mb-4 opacity-50">Contact</p>
+            <div className="flex flex-col gap-3">
+              <a href={`mailto:${portfolioData.email}`}
+                className="flex items-center gap-2 text-[var(--muted)] text-sm hover:text-[#00D4FF] transition-colors">
+                <Mail size={14} className="shrink-0 text-[#00D4FF]" />
+                {portfolioData.email}
+              </a>
+              <a href={`tel:${portfolioData.phone}`}
+                className="flex items-center gap-2 text-[var(--muted)] text-sm hover:text-[#00D4FF] transition-colors">
+                <Phone size={14} className="shrink-0 text-[#00D4FF]" />
+                {portfolioData.phone}
+              </a>
+              <div className="flex items-center gap-2 text-[var(--muted)] text-sm">
+                <MapPin size={14} className="shrink-0 text-[#00D4FF]" />
+                {portfolioData.location}
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="footer-gradient-line mb-6" />
+        <div className="footer-gradient-line mb-5" />
 
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-[var(--muted)] text-sm">
+        {/* Bottom row */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="text-[var(--muted)] text-xs text-center sm:text-left">
             © {new Date().getFullYear()} Sujoy Ghoshal. All rights reserved.
           </p>
           <motion.button
             onClick={scrollTop}
-            whileHover={{ scale: 1.06, y: -2 }}
+            whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
             className="back-to-top"
           >
-            <ChevronUp size={15} />
+            <ChevronUp size={14} />
             Back to top
           </motion.button>
         </div>
+
       </div>
     </footer>
   );
