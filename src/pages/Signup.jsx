@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff, ArrowLeft, User, UserPlus } from 'lucide-react';
 import { useGoogleLogin } from '@react-oauth/google';
 import { registerUser, validatePasswordPolicy, persistGoogleOAuthUser } from '../utils/auth';
@@ -12,6 +12,8 @@ export default function Signup() {
   const [googleLoading, setGoogleLoading] = useState(false);
   const [error, setError]       = useState('');
   const navigate                = useNavigate();
+  const location                = useLocation();
+  const from                    = location.state?.from || '/';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,7 +26,7 @@ export default function Signup() {
     const result = registerUser({ name: form.name, email: form.email, password: form.password });
     setLoading(false);
     if (!result.success) { setError(result.message); return; }
-    navigate('/login');
+    navigate('/login', { state: { from } });
   };
 
   const googleLogin = useGoogleLogin({
@@ -40,7 +42,7 @@ export default function Signup() {
         persistGoogleOAuthUser({ sub: `g-${Date.now()}`, name: 'Google User', email: '', picture: null });
       }
       setGoogleLoading(false);
-      navigate('/');
+      navigate(from);
     },
     onError: () => {
       setError('Google sign-up failed. Please try again.');
