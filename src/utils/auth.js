@@ -249,3 +249,18 @@ export function persistGoogleUser(firebaseUser) {
   recordLogin(session);
   return session;
 }
+
+export function persistGoogleOAuthUser(googleUser) {
+  const session = {
+    id: `google-${googleUser.sub || Date.now()}`,
+    name: googleUser.name || googleUser.email?.split('@')[0] || 'Google User',
+    email: normalizeEmail(googleUser.email || ''),
+    photoURL: googleUser.picture || null,
+    role: 'user',
+    provider: 'google',
+    lastLoginAt: new Date().toISOString(),
+  };
+  persistSession(session);
+  recordLogin(session);
+  return session;
+}
