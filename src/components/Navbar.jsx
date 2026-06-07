@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { LogOut, Moon, MoreVertical, ShieldCheck, Sun, X } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { AUTH_STORAGE_KEY, clearAuthSession, getCurrentUser, isAdminAuthenticated } from '../utils/auth';
-import { signOutFirebase } from '../utils/firebase';
+import { isAdminAuthenticated } from '../utils/auth';
+import { useAuth } from '../utils/AuthContext';
 
 const navLinks = [
   { label: 'Home', href: '#hero' },
@@ -18,28 +18,12 @@ const navLinks = [
 export default function Navbar({ theme, onToggleTheme }) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(Boolean(getCurrentUser()));
-  const [currentUser, setCurrentUser] = useState(getCurrentUser());
+  const { user: currentUser, logout } = useAuth();
+  const isAuthenticated = Boolean(currentUser);
   const location = useLocation();
   const navigate = useNavigate();
   const isHome = location.pathname === '/';
   const isAdmin = isAdminAuthenticated();
-
-  useEffect(() => {
-    const syncAuth = () => {
-      const sessionUser = getCurrentUser();
-      setCurrentUser(sessionUser);
-      setIsAuthenticated(Boolean(sessionUser));
-    };
-
-    window.addEventListener('storage', syncAuth);
-    window.addEventListener(AUTH_STORAGE_KEY, syncAuth);
-
-    return () => {
-      window.removeEventListener('storage', syncAuth);
-      window.removeEventListener(AUTH_STORAGE_KEY, syncAuth);
-    };
-  }, []);
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 50);
@@ -48,20 +32,11 @@ export default function Navbar({ theme, onToggleTheme }) {
   }, []);
 
   useEffect(() => {
-    const sessionUser = getCurrentUser();
-    setCurrentUser(sessionUser);
-    setIsAuthenticated(Boolean(sessionUser));
-  }, [location.pathname]);
-
-  useEffect(() => {
     setMenuOpen(false);
   }, [location.pathname]);
 
   const handleLogout = () => {
-    signOutFirebase().catch(() => {});
-    clearAuthSession();
-    setIsAuthenticated(false);
-    setCurrentUser(null);
+    logout();
     setMenuOpen(false);
     navigate('/login');
   };

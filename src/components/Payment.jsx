@@ -7,7 +7,7 @@ import {
   Star, ArrowRight, Clock,
 } from 'lucide-react';
 import { portfolioData } from '../data/portfolio';
-import { getCurrentUser } from '../utils/auth';
+import { useAuth } from '../utils/AuthContext';
 
 const RAZORPAY_KEY_ID = import.meta.env.VITE_RAZORPAY_KEY_ID;
 // In production (Vercel) API routes are on the same domain — use relative URL.
@@ -100,6 +100,7 @@ function MethodTab({ id, active, onClick, icon, label, sublabel, recommended }) 
 /* ── Main component ────────────────────────────────────────── */
 export default function Payment() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [selectedService, setSelectedService] = useState(null);
   const [hours,           setHours]           = useState(1);
   const [paymentModal,    setPaymentModal]     = useState(false);
@@ -122,7 +123,7 @@ export default function Payment() {
   };
 
   const openModal = () => {
-    if (!getCurrentUser()) {
+    if (!user) {
       navigate('/signup', { state: { from: '/#hire' } });
       return;
     }

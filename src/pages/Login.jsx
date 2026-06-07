@@ -4,6 +4,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff, ArrowLeft, LogIn, UserRound } from 'lucide-react';
 import { useGoogleLogin } from '@react-oauth/google';
 import { authenticateUser, persistGoogleOAuthUser } from '../utils/auth';
+import { useAuth } from '../utils/AuthContext';
 
 export default function Login() {
   const [form, setForm]         = useState({ email: '', password: '' });
@@ -14,6 +15,7 @@ export default function Login() {
   const navigate                = useNavigate();
   const location                = useLocation();
   const from                    = location.state?.from || '/';
+  const { login }               = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,6 +24,7 @@ export default function Login() {
     const result = authenticateUser(form);
     setLoading(false);
     if (!result.success) { setError(result.message); return; }
+    login(result.user);
     navigate(result.role === 'admin' ? '/admin' : from);
   };
 
@@ -33,9 +36,9 @@ export default function Login() {
           headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
         });
         const googleUser = await res.json();
-        persistGoogleOAuthUser(googleUser);
+        login(persistGoogleOAuthUser(googleUser));
       } catch {
-        persistGoogleOAuthUser({ sub: `g-${Date.now()}`, name: 'Google User', email: '', picture: null });
+        login(persistGoogleOAuthUser({ sub: `g-${Date.now()}`, name: 'Google User', email: '', picture: null }));
       }
       setGoogleLoading(false);
       navigate(from);

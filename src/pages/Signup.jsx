@@ -4,6 +4,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff, ArrowLeft, User, UserPlus } from 'lucide-react';
 import { useGoogleLogin } from '@react-oauth/google';
 import { registerUser, validatePasswordPolicy, persistGoogleOAuthUser } from '../utils/auth';
+import { useAuth } from '../utils/AuthContext';
 
 export default function Signup() {
   const [form, setForm]         = useState({ name: '', email: '', password: '', confirm: '' });
@@ -14,6 +15,7 @@ export default function Signup() {
   const navigate                = useNavigate();
   const location                = useLocation();
   const from                    = location.state?.from || '/';
+  const { login }               = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,9 +39,9 @@ export default function Signup() {
           headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
         });
         const googleUser = await res.json();
-        persistGoogleOAuthUser(googleUser);
+        login(persistGoogleOAuthUser(googleUser));
       } catch {
-        persistGoogleOAuthUser({ sub: `g-${Date.now()}`, name: 'Google User', email: '', picture: null });
+        login(persistGoogleOAuthUser({ sub: `g-${Date.now()}`, name: 'Google User', email: '', picture: null }));
       }
       setGoogleLoading(false);
       navigate(from);
