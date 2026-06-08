@@ -98,7 +98,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-24 px-4 sm:px-6">
+    <section id="contact" className="pt-24 pb-36 px-4 sm:px-6">
       <div className="section-center">
 
         {/* Heading */}
@@ -164,7 +164,7 @@ export default function Contact() {
                     whileTap={{ scale: 0.95 }}
                     title={label}
                     className="w-10 h-10 rounded-xl flex items-center justify-center transition-all"
-                    style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}
+                    style={{ background: 'var(--surface-2)', border: '1px solid var(--border-2)' }}
                   >
                     <Icon size={18} style={{ color }} />
                   </motion.a>
@@ -235,7 +235,7 @@ export default function Contact() {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   className="glass-card p-6 sm:p-8"
-                  style={{ border: '1px solid rgba(255,255,255,0.08)' }}
+                  style={{ border: '1px solid var(--border-2)' }}
                 >
                   <h3 className="text-lg font-bold text-[var(--text)] mb-6">Send a Message</h3>
 
