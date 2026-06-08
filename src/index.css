@@ -486,6 +486,25 @@ html[data-theme='light'] .float-badge { background: rgba(255,255,255,0.92); }
 .scroll-down-btn { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); color: var(--muted); opacity: .6; cursor: pointer; }
 
 /* ─── About ─────────────────────────────────────────────────── */
+.about-badge {
+  display: inline-flex; align-items: center;
+  font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em;
+  color: #00D4FF; background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.2);
+  padding: 4px 10px; border-radius: 999px;
+}
+
+.about-category-card {
+  padding: 18px; border-radius: 16px;
+  background: var(--cat-bg, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--cat-color, #00D4FF) 18%, transparent);
+  transition: border-color .25s, box-shadow .25s, transform .25s;
+}
+.about-category-card:hover {
+  border-color: color-mix(in srgb, var(--cat-color, #00D4FF) 40%, transparent);
+  box-shadow: 0 8px 30px color-mix(in srgb, var(--cat-color, #00D4FF) 8%, transparent);
+  transform: translateY(-3px);
+}
+
 .about-stat-card {
   text-align: center; padding: 1.5rem 1rem; border-radius: 18px;
   background: var(--surface); border: 1px solid var(--border); transition: all .3s;
