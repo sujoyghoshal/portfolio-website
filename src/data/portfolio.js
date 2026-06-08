@@ -14,9 +14,9 @@ export const portfolioData = {
   about: `I'm a passionate Software Engineer at Capgemini with hands-on experience in building scalable full-stack applications using React, Java, and Spring Boot. I love crafting clean, high-performance code and turning complex problems into simple, elegant solutions. From optimizing APIs to building pixel-perfect UIs, I bring both technical depth and a product mindset to everything I build.`,
 
   services: [
-    { name: "Portfolio Website", price: 5000, description: "Clean, responsive portfolio site tailored to your brand", icon: "🌐" },
-    { name: "Full Stack Application", price: 20000, description: "End-to-end web app with React frontend & Java/Node backend", icon: "⚡" },
-    { name: "Bug Fixing / Consulting", price: 1, description: "Per hour — diagnosis, fixes, and code review", icon: "🔧", perHour: true },
+    { name: "Portfolio Website", price: 10000, description: "Clean, responsive portfolio site tailored to your brand", icon: "🌐" },
+    { name: "Full Stack Application", price: 25000, description: "End-to-end web app with React frontend & Java/Node backend", icon: "⚡" },
+    { name: "Bug Fixing / Consulting", price: 1000, description: "Per hour — diagnosis, fixes, and code review", icon: "🔧", perHour: true },
   ],
 
   skills: {
