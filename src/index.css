@@ -514,6 +514,20 @@ html[data-theme='light'] .float-badge { background: rgba(255,255,255,0.92); }
 }
 .skill-tag-pill:hover { border-color: rgba(0,212,255,.35); color: #00D4FF; background: rgba(0,212,255,.06); }
 
+.about-tech-pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 5px 10px; border-radius: 8px;
+  background: var(--surface); border: 1px solid var(--border);
+  font-size: .78rem; font-weight: 600; color: var(--muted);
+  transition: all .2s ease; cursor: default;
+}
+.about-tech-pill:hover {
+  border-color: var(--pill-color, #00D4FF);
+  color: var(--pill-color, #00D4FF);
+  background: color-mix(in srgb, var(--pill-color, #00D4FF) 8%, transparent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--pill-color, #00D4FF) 12%, transparent);
+}
+
 /* ─── Skills ────────────────────────────────────────────────── */
 .skill-category-card {
   padding: 28px; border-radius: 20px;
