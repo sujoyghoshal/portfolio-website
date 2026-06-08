@@ -738,6 +738,54 @@ input::placeholder, textarea::placeholder { text-align: left; }
 
 .contact-toast  { width: min(calc(100vw - 24px),420px); }
 
+/* ─── Contact floating label fields ─────────────────────────── */
+.contact-float-input {
+  width: 100%;
+  background: rgba(255,255,255,0.04);
+  border: 1.5px solid rgba(255,255,255,0.1);
+  border-radius: 14px;
+  padding: 22px 16px 8px;
+  color: var(--text);
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
+  font-family: inherit;
+}
+.contact-float-input:focus,
+.contact-float-input.focused {
+  border-color: rgba(0,212,255,0.55);
+  background: rgba(0,212,255,0.04);
+  box-shadow: 0 0 0 3px rgba(0,212,255,0.09);
+}
+.contact-float-label {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  font-size: 0.93rem;
+  pointer-events: none;
+  transition: all 0.2s ease;
+  background: transparent;
+  padding: 0 2px;
+}
+textarea ~ .contact-float-label {
+  top: 18px;
+  transform: none;
+}
+.contact-float-label.up {
+  top: 8px;
+  transform: none;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.contact-float-label.up.active {
+  color: #00D4FF;
+}
+
 /* ─── Footer ────────────────────────────────────────────────── */
 .footer-gradient-line {
   height: 1px;
@@ -1668,4 +1716,8 @@ input::placeholder, textarea::placeholder { text-align: left; }
   /* ── Modal ── */
   .modal-card { padding: 20px 14px; border-radius: 18px; }
   .modal-overlay { padding: 8px; align-items: flex-end; }
+
+  /* ── Contact float fields ── */
+  .contact-float-input { font-size: 0.875rem; }
+  .contact-float-label { font-size: 0.8rem; }
 }
