@@ -5,6 +5,7 @@ import Skills from '../components/Skills';
 import ChatAssistant from '../components/ChatAssistant';
 import Experience from '../components/Experience';
 import Projects from '../components/Projects';
+import YouTubeSection from '../components/YouTubeSection';
 import Education from '../components/Education';
 import Testimonials from '../components/Testimonials';
 import Payment from '../components/Payment';
@@ -21,6 +22,7 @@ export default function Home() {
       <ChatAssistant />
       <Experience />
       <Projects />
+      <YouTubeSection />
       <Education />
       <Testimonials />
       <Payment />
