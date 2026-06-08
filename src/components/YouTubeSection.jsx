@@ -13,12 +13,13 @@ const SUBSCRIBERS   = '58';
 export default function YouTubeSection() {
   const playerRef   = useRef(null);
   const [playing,   setPlaying]   = useState(false);
-  const [muted,     setMuted]     = useState(false);
+  const [muted,     setMuted]     = useState(true);
   const [ready,     setReady]     = useState(false);
   const [started,   setStarted]   = useState(false);
 
   const onReady = useCallback((e) => {
     playerRef.current = e.target;
+    e.target.mute();
     setReady(true);
   }, []);
 
@@ -50,6 +51,7 @@ export default function YouTubeSection() {
       rel:            0,
       showinfo:       0,
       iv_load_policy: 3,
+      mute:           1,
       fs:             0,
       disablekb:      1,
       origin:         window.location.origin,
