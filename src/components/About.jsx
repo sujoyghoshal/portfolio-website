@@ -13,13 +13,13 @@ import { portfolioData } from '../data/portfolio';
 
 /* ── Stats ──────────────────────────────────────────────────── */
 const stats = [
-  { value: 1,   suffix: '+',   label: 'Years Exp.'     },
-  { value: 10,  suffix: '+',   label: 'Projects Built' },
-  { value: 8,   suffix: '.27', label: 'CGPA / 10'      },
-  { value: 4,   suffix: '+',   label: 'Clients Served' },
+  { value: 1,    suffix: '+', label: 'Years Exp.'     },
+  { value: 10,   suffix: '+', label: 'Projects Built' },
+  { value: 8.27, suffix: '',  label: 'CGPA / 10', decimals: 2 },
+  { value: 4,    suffix: '+', label: 'Clients Served' },
 ];
 
-function Counter({ value, suffix }) {
+function Counter({ value, suffix, decimals = 0 }) {
   const [count, setCount] = useState(0);
   const ref    = useRef(null);
   const inView = useInView(ref, { once: true });
@@ -30,13 +30,13 @@ function Counter({ value, suffix }) {
     const t = setInterval(() => {
       cur += step;
       if (cur >= value) { setCount(value); clearInterval(t); }
-      else setCount(Math.floor(cur * 10) / 10);
+      else setCount(cur);
     }, 25);
     return () => clearInterval(t);
   }, [inView, value]);
   return (
     <span ref={ref} className="about-stat-num">
-      {suffix === '.27' ? count.toFixed(2) : Math.round(count)}{suffix}
+      {decimals > 0 ? count.toFixed(decimals) : Math.round(count)}{suffix}
     </span>
   );
 }
@@ -170,7 +170,7 @@ export default function About() {
         </motion.div>
 
         {/* ── Stats row ── */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-16">
           {stats.map((s, i) => (
             <motion.div
               key={s.label}
@@ -180,7 +180,7 @@ export default function About() {
               transition={{ delay: i * 0.08, duration: 0.5 }}
               className="about-stat-card"
             >
-              <Counter value={s.value} suffix={s.suffix} />
+              <Counter value={s.value} suffix={s.suffix} decimals={s.decimals ?? 0} />
               <p className="about-stat-lbl">{s.label}</p>
             </motion.div>
           ))}
