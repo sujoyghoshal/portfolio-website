@@ -16,6 +16,7 @@ const allProjects = [
     gradient: 'linear-gradient(135deg,#0A0A0F 0%,#052e16 40%,#064e3b 100%)',
     accentColor: '#10B981',
     icon: '🧠',
+    image: '/project/project1.png',
     liveUrl: null,
     githubUrl: 'https://github.com/sujoyghoshal',
     badge: '~500ms query · multi-tenant · production-ready',
@@ -36,6 +37,7 @@ const allProjects = [
     gradient: 'linear-gradient(135deg,#0A0A0F 0%,#0c1a10 40%,#0f2a1a 100%)',
     accentColor: '#F59E0B',
     icon: '📊',
+    image: '/project/project2.png',
     liveUrl: null,
     githubUrl: 'https://github.com/sujoyghoshal',
     badge: 'Monitors 20+ microservices in real-time',
@@ -56,6 +58,7 @@ const allProjects = [
     gradient: 'linear-gradient(135deg,#0A0A0F 0%,#1a0d1a 40%,#2d0a2d 100%)',
     accentColor: '#EC4899',
     icon: '🛒',
+    image: '/project/project3.png',
     liveUrl: null,
     githubUrl: 'https://github.com/sujoyghoshal',
     badge: 'Handles 50,000+ orders/day architecture',
@@ -76,6 +79,7 @@ const allProjects = [
     gradient: 'linear-gradient(135deg,#0A0A0F 0%,#1a0a2e 40%,#16213e 100%)',
     accentColor: '#8B5CF6',
     icon: '⚡',
+    image: '/project/project4.png',
     liveUrl: null,
     githubUrl: 'https://github.com/sujoyghoshal',
     badge: '<1ms order matching latency',
@@ -96,6 +100,7 @@ const allProjects = [
     gradient: 'linear-gradient(135deg,#0A0A0F 0%,#0a1628 40%,#0f2040 100%)',
     accentColor: '#00D4FF',
     icon: '🎬',
+    image: '/project/project5.png',
     liveUrl: null,
     githubUrl: 'https://github.com/sujoyghoshal',
     badge: 'End-to-end in under 3 mins · fully serverless',
@@ -218,40 +223,50 @@ function ProjectThumb({ project }) {
       style={{ height: 190, background: project.gradient }}
     >
       {/* browser chrome bar */}
-      <div className="absolute top-0 left-0 right-0 flex items-center gap-2 px-3 py-2"
-        style={{ background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(6px)' }}>
+      <div className="absolute top-0 left-0 right-0 z-10 flex items-center gap-2 px-3 py-2"
+        style={{ background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(6px)' }}>
         <span className="w-2.5 h-2.5 rounded-full bg-red-400 opacity-80" />
         <span className="w-2.5 h-2.5 rounded-full bg-yellow-400 opacity-80" />
         <span className="w-2.5 h-2.5 rounded-full bg-green-400 opacity-80" />
         <div className="flex-1 mx-2 h-4 rounded-sm flex items-center px-2"
           style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.1)' }}>
-          <span className="text-white/30 text-[9px] truncate">sujoyghoshal.dev/{project.name.toLowerCase().replace(/[^a-z0-9]/g,'-').replace(/-+/g,'-')}</span>
+          <span className="text-white/30 text-[9px] truncate">sujoyghoshal.in/{project.name.toLowerCase().replace(/[^a-z0-9]/g,'-').replace(/-+/g,'-')}</span>
         </div>
       </div>
 
-      {/* content area */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center pt-8 pb-2 gap-2">
-        {/* ambient glow */}
-        <div className="absolute inset-0 opacity-20"
-          style={{ background: `radial-gradient(ellipse at 50% 60%,${project.accentColor},transparent 65%)` }} />
-
-        <span className="text-4xl relative z-10">{project.icon}</span>
-        <p className="text-white font-black text-sm text-center px-4 leading-tight relative z-10 drop-shadow">{project.name}</p>
-
-        {/* floating tech chips */}
-        <div className="flex flex-wrap justify-center gap-1.5 px-4 relative z-10">
-          {project.tech.slice(0, 3).map((t) => (
-            <span key={t} className="text-[9px] font-bold px-2 py-0.5 rounded-full"
-              style={{ background: `${project.accentColor}22`, border: `1px solid ${project.accentColor}44`, color: project.accentColor }}>
-              {t}
-            </span>
-          ))}
+      {project.image ? (
+        /* Real screenshot */
+        <>
+          <img
+            src={project.image}
+            alt={project.name}
+            className="absolute inset-0 w-full h-full object-cover object-top"
+            style={{ marginTop: 28 }}
+          />
+          <div className="absolute inset-0 pointer-events-none"
+            style={{ background: 'linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.7) 100%)' }} />
+        </>
+      ) : (
+        /* Gradient placeholder */
+        <div className="absolute inset-0 flex flex-col items-center justify-center pt-8 pb-2 gap-2">
+          <div className="absolute inset-0 opacity-20"
+            style={{ background: `radial-gradient(ellipse at 50% 60%,${project.accentColor},transparent 65%)` }} />
+          <span className="text-4xl relative z-10">{project.icon}</span>
+          <p className="text-white font-black text-sm text-center px-4 leading-tight relative z-10 drop-shadow">{project.name}</p>
+          <div className="flex flex-wrap justify-center gap-1.5 px-4 relative z-10">
+            {project.tech.slice(0, 3).map((t) => (
+              <span key={t} className="text-[9px] font-bold px-2 py-0.5 rounded-full"
+                style={{ background: `${project.accentColor}22`, border: `1px solid ${project.accentColor}44`, color: project.accentColor }}>
+                {t}
+              </span>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* category badge */}
-      <div className="absolute top-9 right-2.5 text-[9px] font-extrabold tracking-wider uppercase px-2 py-0.5 rounded-full"
-        style={{ background: `${project.accentColor}22`, border: `1px solid ${project.accentColor}55`, color: project.accentColor }}>
+      <div className="absolute top-9 right-2.5 z-10 text-[9px] font-extrabold tracking-wider uppercase px-2 py-0.5 rounded-full"
+        style={{ background: `${project.accentColor}22`, border: `1px solid ${project.accentColor}55`, color: project.accentColor, backdropFilter: 'blur(4px)' }}>
         {project.category}
       </div>
     </div>
